@@ -65,10 +65,10 @@ while(True):
         break
 
 
-print(status_list)
+#print(status_list)
 #print("time....................................................................")
 #print(times)
-print(per)
+#print(per)
 for i in range(0, len(times), 2):
     df=df.append({"Entry":times[i],"Exit":times[i+1],"Person":str(per)},ignore_index=True)
 df.to_csv("times.csv")
