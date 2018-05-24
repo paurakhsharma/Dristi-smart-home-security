@@ -1,5 +1,14 @@
 import cv2
 import numpy as np
+import os
+
+
+
+if not os.path.exists('./dataSet'):
+    os.makedirs('./dataSet')
+
+if not os.path.exists('./trainer'):
+    os.makedirs('./trainer')
 
 faceDetector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml");
 cam = cv2.VideoCapture(0)
