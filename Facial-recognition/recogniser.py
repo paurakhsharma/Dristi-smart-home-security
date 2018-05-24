@@ -23,30 +23,46 @@ while(True):
     ret, image = cam.read()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(gray, 1.2, 5)
+    
 
     for(x,y,w,h) in faces:
+        stack=['yo chai zero :D ','Niranjan','saugat','jitu','manche','jhile']
         cv2.rectangle(image, (x-50,y-50),(x+w+50,y+h+50),(225,0,0),2)
         Id, conf = reconizer.predict(gray[y:y+h,x:x+w])
         if(conf >= 67):
             Id = 0
             status = 0
         else:
-            Id = Id    
-        if(Id==1):
-            Id = "Niranjan"
-            per="Niranjan"
-            status=1
-        elif(Id==2):
-            Id="Saugat"
-            status=1
-        elif(Id==3):
-            Id= "Jitu"
-            status=1
-        elif(Id==4):
-            Id="manchhe"
-            status=1    
-        else:
-            Id = "Low Confidence" 
+            Id = Id 
+            status=1   
+            per=stack[Id]
+
+        
+
+        
+        Id=stack[Id]
+        
+        #print(Id)
+
+        # if(Id==1):
+        #     Id = "Niranjan"
+        #     per="Niranjan"
+        #     status=1
+        # elif(Id==2):
+        #     Id="Saugat"
+        #     status=1
+        # elif(Id==3):
+        #     Id= "Jitu"
+        #     status=1
+        # elif(Id==4):
+        #     Id="manchhe"
+        #     status=1
+        # elif(Id==5):
+        #     Id="jhile"
+        #     per="dilip"
+        #     status=1        
+        # else:
+        #     Id = "Low Confidence" 
 
         cv2.putText(image,str(Id),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
         cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
@@ -65,12 +81,16 @@ while(True):
         break
 
 
-#print(status_list)
+print(status_list)
 #print("time....................................................................")
 #print(times)
-#print(per)
+print(per)
+print(Id)
 for i in range(0, len(times), 2):
     df=df.append({"Entry":times[i],"Exit":times[i+1],"Person":str(per)},ignore_index=True)
-df.to_csv("times.csv")
+
+with open('times.csv', 'a') as f:
+    df.to_csv(f, header=True)    
+
 cam.release()
 cv2.destroyAllWindows()        
