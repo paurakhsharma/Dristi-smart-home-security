@@ -17,6 +17,9 @@ status_list=[0, 0]
 times=[]
 per=""
 
+
+
+
 while(True):
     Id = 0
     status = 0
@@ -41,28 +44,6 @@ while(True):
 
         
         Id=stack[Id]
-        
-        #print(Id)
-
-        # if(Id==1):
-        #     Id = "Niranjan"
-        #     per="Niranjan"
-        #     status=1
-        # elif(Id==2):
-        #     Id="Saugat"
-        #     status=1
-        # elif(Id==3):
-        #     Id= "Jitu"
-        #     status=1
-        # elif(Id==4):
-        #     Id="manchhe"
-        #     status=1
-        # elif(Id==5):
-        #     Id="jhile"
-        #     per="dilip"
-        #     status=1        
-        # else:
-        #     Id = "Low Confidence" 
 
         cv2.putText(image,str(Id),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
         cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
@@ -81,11 +62,12 @@ while(True):
         break
 
 
-print(status_list)
+
+#print(status_list)
 #print("time....................................................................")
 #print(times)
-print(per)
-print(Id)
+#print(per)
+#print(Id)
 for i in range(0, len(times), 2):
     df=df.append({"Entry":times[i],"Exit":times[i+1],"Person":str(per)},ignore_index=True)
 
