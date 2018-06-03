@@ -3,3 +3,5 @@ dataSet/
 trainer/
 .vscode
 detectedUsersLog/
+facialRecognition/__pycache__
+
