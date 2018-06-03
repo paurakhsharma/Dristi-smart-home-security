@@ -1,7 +1,8 @@
 import cv2
 import uuid
 
-from flask import jsonify,make_response,render_template
+from flask import jsonify,make_response,render_template,session
+from flask_socketio import emit
 
 def reconizer_func():
     reconizer = cv2.face.LBPHFaceRecognizer_create()
@@ -34,21 +35,22 @@ def reconizer_func():
                 else:
                     Id = "Low Confidence"
 
-                if(conf <= 50 ):
+                if(conf <= 60 ):
                     path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
-                    cv2.imwrite(path,image)
-                    cam.release()
-                    cv2.destroyAllWindows()
+                    cv2.imwrite(path,image) 
 
-                    return(jsonify(userdetected=Id,
-                                    path=path))    
+                    emit('recognise', {
+                        'detectedUser': Id,
+                        'imagePath': path
+                    })
+                      
                 cv2.putText(image,str(Id),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
                 cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
 
         cv2.imshow("Image", image)
         if(cv2.waitKey(1) == ord('q')):
-            break
+            cam.release()
+            cv2.destroyAllWindows()      
 
     cam.release()
-    cv2.destroyAllWindows()  
-    return jsonify({'trained': "Data set has been trained"})       
+    cv2.destroyAllWindows()
