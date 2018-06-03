@@ -19,19 +19,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 
-
-
-
-@auth.get_password
-def get_password(username):
-    if username == 'paurakh':
-        return 'sublimeuser'
-    return None
-
-# @auth.error_handler
-# def unauthorized():
-    # return make_response(jsonify({'error': 'Unauthorized access'}), 403) 
-
 #Run dataSetCreator script
 @app.route('/flask/api/v1.0/create/<int:id>', methods=['GET'])
 def run_fecogniser(id):
