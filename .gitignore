@@ -4,8 +4,12 @@ trainer/
 .vscode
 detectedUsersLog/
 <<<<<<< HEAD
+<<<<<<< HEAD
 facialRecognition/__pycache__
 
+=======
+*.pyc
+>>>>>>> 4027aeb77e2fe1e343e40f74905614710631a43e
 =======
 *.pyc
 >>>>>>> 4027aeb77e2fe1e343e40f74905614710631a43e
