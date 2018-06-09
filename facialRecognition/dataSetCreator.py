@@ -10,7 +10,7 @@ def dataSetCreator_func(id, noOfSamples):
     faceDetector = cv2.CascadeClassifier("../facialRecognition/haarcascade_frontalface_default.xml")
     
     sampleNum = 0
-    Id = id;
+    Id = id
 
     while(True):
         ret, image = cam.read()
