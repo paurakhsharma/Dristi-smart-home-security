@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const bodyParser = require('body-parser')
 const pg = require('pg')
 const app = express()
 const config={
@@ -8,13 +9,17 @@ const config={
   password:'aasis',
   port:5432
 }
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+
 const pool = new pg.Pool(config);
 // pool.connect();
 // const query = pool.query(
 //   'CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
 // pool.end();
 
-router.post('/api/v1/todos', (req, res, next) => {
+app.post('/api/v1/todos', (req, res, next) => {
   
   // Grab data from http request
   //const data = {text: req.body.text, complete: false};
