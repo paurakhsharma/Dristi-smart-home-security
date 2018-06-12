@@ -41,7 +41,7 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
     //to add the emitted data from recogniser.py and adding to database
     pool.connect();
 
-    pool.query("INSERT INTO dristitb(names, lastentry, imagepath, nameId) VALUES($1, $2, $3)", 
+    pool.query("INSERT INTO dristitb(names, lastentry, imagepath, nameId) VALUES($1, $2, $3, $4)", 
     [detectedUser,entryTime, imagePath, detectedId], (err, result) => {
       //res.send(result.rows)
       if(err){
