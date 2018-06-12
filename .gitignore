@@ -3,13 +3,11 @@ dataSet/
 trainer/
 .vscode
 detectedUsersLog/
-<<<<<<< HEAD
-<<<<<<< HEAD
+*.pyc
 facialRecognition/__pycache__
+*.pyc
+facialRecognition/__pycache__
+*.pyc
+node/node_modules/
+node/package-lock.json
 
-=======
-*.pyc
->>>>>>> 4027aeb77e2fe1e343e40f74905614710631a43e
-=======
-*.pyc
->>>>>>> 4027aeb77e2fe1e343e40f74905614710631a43e
