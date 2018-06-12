@@ -1,10 +1,12 @@
 import cv2
 import uuid
+import time
 
 from flask import jsonify,make_response,render_template,session
 from flask_socketio import emit
 
 def reconizer_func():
+    timeReq = time.strftime("%d/%m/%Y %H:%M")
     reconizer = cv2.face.LBPHFaceRecognizer_create()
     reconizer.read('../facialRecognition/trainer/trainer.yml')
     faceCascade = cv2.CascadeClassifier('../facialRecognition/haarcascade_frontalface_default.xml')
@@ -14,6 +16,7 @@ def reconizer_func():
 
     while(True): 
         Id = 0
+        id=int(0)
         ret, image = cam.read()
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = faceCascade.detectMultiScale(gray, 1.2, 5)
@@ -27,6 +30,7 @@ def reconizer_func():
                 else:
                     Id = Id    
                 if(Id==1):
+                    id=1
                     Id="Paurakh Sharma Humagain"
                 elif(Id==2):
                     Id="Bijay"
@@ -41,7 +45,9 @@ def reconizer_func():
 
                     emit('recognise', {
                         'detectedUser': Id,
-                        'imagePath': path
+                        'detectedId' : id,
+                        'imagePath': path,
+                        'entryTime' : timeReq
                     })
                       
                 cv2.putText(image,str(Id),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)

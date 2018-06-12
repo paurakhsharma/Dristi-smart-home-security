@@ -8,10 +8,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const pool = new Pool({
-  user: 'dristi',
+  user: 'postgres',
   host: 'localhost',
   database: 'dristidb',
-  password: 'apple123',
+  password: 'aasis',
   port: 5432,
 });
 
@@ -33,16 +33,38 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
   // After getting response from the server
   socket.on('recognise', function(data){
     detectedUser = data.detectedUser;
+    detectedId = data.detectedId;
+    imagePath = data.imagePath;
+    entryTime = data.entryTime;
+    console.log(detectedUser);
+    
+    //to add the emitted data from recogniser.py and adding to database
+    pool.connect();
+
+    pool.query("INSERT INTO dristitb(names, lastentry, imagepath, nameId) VALUES($1, $2, $3)", 
+    [detectedUser,entryTime, imagePath, detectedId], (err, result) => {
+      //res.send(result.rows)
+      if(err){
+        return console.error("errror occured", err);
+      }else{
+        console.log(result.rows);
+      }
+    });  
+
+
 
     // Check if the detected person is in the database
     Object.keys(usersInfo).map( (key) =>{
-      if(usersInfo[key]['name'].trim() === detectedUser){
+      if(usersInfo[key]['name'] === detectedUser){
         console.log('The person is: '+ detectedUser);
         console.log('Last entry of the user is: ' + usersInfo[key]['lastentry']);
         console.log('The image path is: '+ usersInfo[key['name']])
       }
+
     });
   });
+    
+  
   // Establish socket connection
   socket.emit('send_message');
 });
@@ -50,11 +72,16 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
 app.post('/node/api/v1/add', (req, res, next) => {
   console.log('api has been called');
 
-  pool.connect();
-  pool.query("INSERT INTO dristitb(name, lastentry, imagepath) VALUES($1, $2, $3)", 
-                [req.body.name, req.body.lastentry, req.body.imagepath], (err, result) => {
-                  res.send(result.rows);
-                });  
+  // pool.connect();
+  // pool.query("INSERT INTO dristitb(name, lastentry, imagepath) VALUES($1, $2, $3)", 
+  //               [req.body.name, req.body.lastentry, req.body.imagepath], (err, result) => {
+  //                 //res.send(result.rows)
+  //                 if(err){
+  //                   return console.error("errror occured", err);
+  //                 }else{
+  //                   console.log(result.rows);
+  //                 }
+  //               });  
   });
 
 
@@ -75,6 +102,7 @@ app.listen(4000, () => {
           return console.error('error running query', err);
       }
       usersInfo = result.rows; 
+      console.log(usersInfo)
     }); 
   });
 
