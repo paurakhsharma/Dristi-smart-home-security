@@ -27,7 +27,7 @@ def reconizer_func():
                 else:
                     Id = Id    
                 if(Id==1):
-                    Id="Paurakh"
+                    Id="Paurakh Sharma Humagain"
                 elif(Id==2):
                     Id="Bijay"
                 elif(Id==3):
@@ -35,7 +35,7 @@ def reconizer_func():
                 else:
                     Id = "Low Confidence"
 
-                if(conf <= 60 ):
+                if(conf <= 55 ):
                     path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
                     cv2.imwrite(path,image) 
 

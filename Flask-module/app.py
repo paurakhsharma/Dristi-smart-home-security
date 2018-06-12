@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 
 #Run dataSetCreator script
-@app.route('/flask/api/v1.0/create/<int:id>', methods=['GET'])
+@app.route('/flask/api/v1.0/create/<string:name>', methods=['GET'])
 def run_fecogniser(id):
     dataSetCreator.dataSetCreator_func(id,50)
     return jsonify({'created': "Data set has been created"})
@@ -31,10 +31,10 @@ def train_dataSet():
     trainer.trainer_func()
     return jsonify({'trained': "Data set has been trained"})  
 
-#Run the recogniser
-@app.route('/flask/api/v1.0/recognise', methods=['GET'])
-def recognise_faces():
-    return(recogniser.reconizer_func())
+# Run the recogniser
+# @app.route('/flask/api/v1.0/recognise', methods=['GET'])
+# def recognise_faces():
+#     return(recogniser.reconizer_func())
 
 @app.route("/")
 def index():
@@ -42,6 +42,7 @@ def index():
 
 @socketio.on('send_message')
 def handle_source():
+    print('handel source has been called')
     recogniser.reconizer_func()
 
 if __name__== '__main__':
