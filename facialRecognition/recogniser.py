@@ -10,7 +10,7 @@ def reconizer_func():
     reconizer = cv2.face.LBPHFaceRecognizer_create()
     reconizer.read('../facialRecognition/trainer/trainer.yml')
     faceCascade = cv2.CascadeClassifier('../facialRecognition/haarcascade_frontalface_default.xml')
-
+    
     cam = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
 
