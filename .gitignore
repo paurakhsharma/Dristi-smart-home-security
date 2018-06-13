@@ -6,5 +6,8 @@ detectedUsersLog/
 *.pyc
 facialRecognition/__pycache__
 *.pyc
+facialRecognition/__pycache__
+*.pyc
 node/node_modules/
 node/package-lock.json
+
