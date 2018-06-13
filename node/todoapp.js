@@ -2,21 +2,33 @@ const express = require('express')
 const { Pool } = require('pg')
 const app = express()
 const bodyParser = require('body-parser');
+cons = require('consolidate');
 const request = require('request');
+var path    = require("path");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'dristi',
   host: 'localhost',
   database: 'dristidb',
-  password: 'aasis',
+  password: 'apple123',
   port: 5432,
 });
 
 // Request flask api to access face recogniser 
 var usersInfo = null;
+var last = null;
+// Assign dust engine to .dust Files
+// app.engine('dust', cons.dust);
+
+// // Set default Ext .dust
+// app.set('view engine', 'dust');
+// app.set('views', __dirname + '/templates');
+
+// Set public folder
+app.use(express.static(path.join(__dirname, '/templates/static')));
 
 // pool.connect();
 // const query = pool.query(
@@ -58,30 +70,41 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
       if(usersInfo[key]['name'] === detectedUser){
         console.log('The person is: '+ detectedUser);
         console.log('Last entry of the user is: ' + usersInfo[key]['lastentry']);
-        console.log('The image path is: '+ usersInfo[key['name']])
+        console.log('The image path is: ');
       }
 
     });
   });
     
-  
+
   // Establish socket connection
   socket.emit('send_message');
 });
 
-app.post('/node/api/v1/add', (req, res, next) => {
-  console.log('api has been called');
+app.post('/addNewPerson', (req, res, next) => {
+  console.log('new person api is called');
 
-  // pool.connect();
-  // pool.query("INSERT INTO dristitb(name, lastentry, imagepath) VALUES($1, $2, $3)", 
-  //               [req.body.name, req.body.lastentry, req.body.imagepath], (err, result) => {
-  //                 //res.send(result.rows)
-  //                 if(err){
-  //                   return console.error("errror occured", err);
-  //                 }else{
-  //                   console.log(result.rows);
-  //                 }
-  //               });  
+  pool.connect();
+  pool.query("INSERT INTO dristitb(name) VALUES($1)", 
+                [req.body.name], (err, result) => {
+                  //res.send(result.rows)
+                  if(err){
+                    return console.error("errror occured", err);
+                  }else{
+                    request({
+                      url: `http://localhost:5000/flask/api/v1.0/create/${last + 1}`,
+                      json: true,
+                      method: "POST"
+                    }, (error, response, body) => {
+                      if(error){
+                        console.log(error);
+                      }
+                      console.log(JSON.stringify(body, undefined, 2));
+                    });  
+
+                    res.send(`New user ${req.body.name} has been added  in the database`);
+                  }
+                });  
   });
 
 
@@ -94,7 +117,6 @@ app.listen(4000, () => {
     if(err) {
       done();
       console.log(err);
-      return res.status(500).json({success: false, data: err});
     }
   
     pool.query('SELECT * FROM dristitb', (err, result) => {
@@ -102,8 +124,14 @@ app.listen(4000, () => {
           return console.error('error running query', err);
       }
       usersInfo = result.rows; 
-      console.log(usersInfo)
+      last = usersInfo.length - 1;
+      console.log(usersInfo[last]);
+
     }); 
   });
+    
+  app.get('/', (req,res) => {
+    res.sendFile(path.join(__dirname+'/templates/index.html'), usersInfo);
+  })
 
 });
