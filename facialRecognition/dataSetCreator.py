@@ -1,11 +1,22 @@
 import cv2
 import os
 import sys
+from facialRecognition import trainer
 
 
 from flask import jsonify
 
 def dataSetCreator_func(id, noOfSamples):
+    
+
+
+
+    if not os.path.exists('../facialRecognition/trainer'):
+        os.makedirs('../facialRecognition/trainer')
+
+    if not os.path.exists('../facialRecognition/dataSet'):
+        os.makedirs('../facialRecognition/dataSet')    
+        
     cam = cv2.VideoCapture(0)
     faceDetector = cv2.CascadeClassifier("../facialRecognition/haarcascade_frontalface_default.xml")
     
@@ -27,4 +38,5 @@ def dataSetCreator_func(id, noOfSamples):
         if(sampleNum >= noOfSamples):
             break    
     cam.release()
-    cv2.destroyAllWindows()        
+    cv2.destroyAllWindows() 
+    trainer.trainer_func()       

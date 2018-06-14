@@ -10,11 +10,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const pool = new Pool({
-  user: 'dristi',
+  user: 'postgres',
   host: 'localhost',
   database: 'dristidb',
-  password: 'apple123',
-  port: 5432,
+  password: 'admin',
+  port: 5433
 });
 
 // Request flask api to access face recogniser 
@@ -85,7 +85,7 @@ app.post('/addNewPerson', (req, res, next) => {
   console.log('new person api is called');
 
   pool.connect();
-  pool.query("INSERT INTO dristitb(name) VALUES($1)", 
+  pool.query("INSERT INTO userlist(name) VALUES($1)", 
                 [req.body.name], (err, result) => {
                   //res.send(result.rows)
                   if(err){
@@ -119,7 +119,7 @@ app.listen(4000, () => {
       console.log(err);
     }
   
-    pool.query('SELECT * FROM dristitb', (err, result) => {
+    pool.query('SELECT * FROM userlist', (err, result) => {
       if(err){
           return console.error('error running query', err);
       }

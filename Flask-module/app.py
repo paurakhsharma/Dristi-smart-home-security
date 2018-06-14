@@ -22,7 +22,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 #Run dataSetCreator script
 @app.route('/flask/api/v1.0/create/<int:id>', methods=['POST'])
 def run_fecogniser(id):
-    dataSetCreator.dataSetCreator_func(id,200)
+    dataSetCreator.dataSetCreator_func(id,50)
     return jsonify({'created': "Data set has been created"})
 
 #Train the imageDataSet

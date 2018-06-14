@@ -1,11 +1,32 @@
 import cv2
 import uuid
 import time
+import psycopg2
 
 from flask import jsonify,make_response,render_template,session
 from flask_socketio import emit
 
 def reconizer_func():
+
+
+    try:
+        conn = psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5433)
+        print("connected")
+    except:
+        print("I am unable to connect to the database")
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM userlist")
+    records = cursor.fetchall()
+    record=[]
+    for a in records:
+        ai = a[-1].strip()
+        record.append(ai)
+    
+    
+    record.insert(0,'lowconfident')
+    print(record)
+
     timeReq = time.strftime("%d/%m/%Y %H:%M")
     reconizer = cv2.face.LBPHFaceRecognizer_create()
     reconizer.read('../facialRecognition/trainer/trainer.yml')
@@ -29,16 +50,11 @@ def reconizer_func():
                     Id = 0
                 else:
                     Id = Id    
-                if(Id==1):
-                    id=1
-                    Id="Paurakh Sharma Humagain"
-                elif(Id==2):
-                    Id="Bijay"
-                elif(Id==3):
-                    Id= "Jitu"
-                else:
-                    Id = "Low Confidence"
+                
 
+                print(Id)
+                print(type(Id))
+                Id = record[Id]
                 if(conf <= 55 ):
                     path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
                     cv2.imwrite(path,image) 
@@ -60,3 +76,5 @@ def reconizer_func():
 
     cam.release()
     cv2.destroyAllWindows()
+
+# reconizer_func()
