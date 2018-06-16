@@ -5,13 +5,65 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Main Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    	<style> 
+input[type=text] {
+    width: 400px;
+    padding: 12px 20px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    font-family: Times New Roman;
+    font-size:14pt;
+}
+
+div.center{
+	 margin-top:50px;
+	}
+
+
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+
+
+input[type=button], input[type=submit], input[type=reset] {
+	width:400px;
+    background-color: #2d5699;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+     font-family: Times New Roman;
+    font-size:14pt;
+}
+</style>
+
+
+
+
 </head>
 <body>
+	
+	<!-- <center><img src="dristi-final.jpg" width="10%" height="10%"></center> -->
+	<center>
+			<img src="logo.jpg">
+			
+		<div class="center">
     <form action="/addNewPerson" method="POST">
-        <label >Name</label>
-        <input type="text" name="name">
-        <input type="submit">
+        
+        <input type="text"  name="name" placeholder="Enter your name">
+        <br>
+        <input type="submit" value="Register">
     </form>
-    
+</div>
+    </center>
+
 </body>
 </html>
