@@ -2,11 +2,13 @@ import cv2
 import os
 import sys
 from facialRecognition import trainer
+import psycopg2
 
 
 from flask import jsonify
 
-def dataSetCreator_func(id, noOfSamples):
+def dataSetCreator_func(noOfSamples):
+    
     
 
 
@@ -16,12 +18,23 @@ def dataSetCreator_func(id, noOfSamples):
 
     if not os.path.exists('../facialRecognition/dataSet'):
         os.makedirs('../facialRecognition/dataSet')    
+
+    try:
+        conn=psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5433)
+        print("connected")
+    except:
+        print("unable to connect")   
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM userlist")
+    last=cursor.fetchall()
+    Id=last.pop()[0]
         
     cam = cv2.VideoCapture(0)
     faceDetector = cv2.CascadeClassifier("../facialRecognition/haarcascade_frontalface_default.xml")
     
     sampleNum = 0
-    Id = id
+    # Id = id
 
     while(True):
         ret, image = cam.read()
@@ -38,5 +51,5 @@ def dataSetCreator_func(id, noOfSamples):
         if(sampleNum >= noOfSamples):
             break    
     cam.release()
-    cv2.destroyAllWindows() 
+    cv2.destroyAllWindows()
     trainer.trainer_func()       

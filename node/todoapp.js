@@ -92,7 +92,7 @@ app.post('/addNewPerson', (req, res, next) => {
                     return console.error("errror occured", err);
                   }else{
                     request({
-                      url: `http://localhost:5000/flask/api/v1.0/create/${last + 1}`,
+                      url: `http://localhost:5000/flask/api/v1.0/create/`,
                       json: true,
                       method: "POST"
                     }, (error, response, body) => {
@@ -103,6 +103,7 @@ app.post('/addNewPerson', (req, res, next) => {
                     });  
 
                     res.send(`New user ${req.body.name} has been added  in the database`);
+                  
                   }
                 });  
   });
@@ -123,9 +124,7 @@ app.listen(4000, () => {
       if(err){
           return console.error('error running query', err);
       }
-      usersInfo = result.rows; 
-      last = usersInfo.length - 1;
-      console.log(usersInfo[last]);
+      
 
     }); 
   });

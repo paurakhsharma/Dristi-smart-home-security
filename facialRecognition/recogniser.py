@@ -15,17 +15,30 @@ def reconizer_func():
     except:
         print("I am unable to connect to the database")
 
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM userlist")
-    records = cursor.fetchall()
-    record=[]
-    for a in records:
+    
+   
+    cursor1 = conn.cursor()
+    cursor2 = conn.cursor()
+    cursor1.execute("SELECT id FROM userlist")
+    cursor2.execute("SELECT name FROM userlist")
+    register1 = cursor1.fetchall()
+    register2=cursor2.fetchall()
+    name_list=[]
+    id_list=[]
+    print(register1)
+    print(register2)
+    for i in register1:
+        #print(list(i).pop())
+        id_list.append(list(i).pop())
+
+    for a in register2:
         ai = a[-1].strip()
-        record.append(ai)
-    
-    
-    record.insert(0,'lowconfident')
-    print(record)
+        name_list.append(ai)
+
+    id_list.insert(0,0)
+    name_list.insert(0,'low confidence')    
+    print(name_list)
+    print(id_list)
 
     timeReq = time.strftime("%d/%m/%Y %H:%M")
     reconizer = cv2.face.LBPHFaceRecognizer_create()
@@ -53,20 +66,23 @@ def reconizer_func():
                 
 
                 print(Id)
-                print(type(Id))
-                Id = record[Id]
+                pointer=id_list.index(Id)
+
+                name = name_list[pointer]
+                print(name)
                 if(conf <= 55 ):
                     path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
                     cv2.imwrite(path,image) 
 
                     emit('recognise', {
-                        'detectedUser': Id,
-                        'detectedId' : id,
+                        'detectedUser':name,
+                        'detectedId' : Id,
                         'imagePath': path,
                         'entryTime' : timeReq
                     })
+
                       
-                cv2.putText(image,str(Id),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
+                cv2.putText(image,str(name),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
                 cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
 
         cv2.imshow("Image", image)
