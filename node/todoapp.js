@@ -103,6 +103,7 @@ app.post('/addNewPerson', (req, res, next) => {
                     });  
 
                     res.send(`New user ${req.body.name} has been added  in the database`);
+                  
                   }
                 });  
   });
@@ -124,7 +125,7 @@ app.listen(4000, () => {
           return console.error('error running query', err);
       }
       usersInfo = result.rows; 
-      last = usersInfo.length - 1;
+      last = usersInfo.length-1;
       console.log(usersInfo[last]);
 
     }); 
