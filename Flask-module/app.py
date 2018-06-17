@@ -20,8 +20,8 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 
 #Run dataSetCreator script
-@app.route('/flask/api/v1.0/create/<int:id>', methods=['POST'])
-def run_fecogniser(id):
+@app.route('/flask/api/v1.0/create/', methods=['POST'])
+def run_fecogniser():
     dataSetCreator.dataSetCreator_func(50)
     return jsonify({'created': "Data set has been created"})
 
