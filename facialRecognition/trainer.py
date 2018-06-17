@@ -9,6 +9,7 @@ def trainer_func():
     detector = cv2.CascadeClassifier('../facialRecognition/haarcascade_frontalface_default.xml')
 
     def getImagesAndLabels(path):
+        print('Trainer has been called')
         #get the path of all the files in the folder
         imagePaths = [os.path.join(path,f) for f in os.listdir(path)]
         faceSamples = []
@@ -29,3 +30,4 @@ def trainer_func():
     faces, Ids = getImagesAndLabels('../facialRecognition/dataSet')
     recogniser.train(faces, np.array(Ids))
     recogniser.save('../facialRecognition/trainer/trainer.yml')
+    print('Tranning complete')

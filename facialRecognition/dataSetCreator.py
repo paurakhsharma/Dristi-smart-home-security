@@ -20,7 +20,7 @@ def dataSetCreator_func(noOfSamples):
         os.makedirs('../facialRecognition/dataSet')    
 
     try:
-        conn=psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5433)
+        conn=psycopg2.connect(database="dristidb", user="dristi", password="apple123", port=5432, host='localhost')
         print("connected")
     except:
         print("unable to connect")   

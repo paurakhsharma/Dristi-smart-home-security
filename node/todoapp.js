@@ -10,11 +10,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'dristi',
   host: 'localhost',
   database: 'dristidb',
-  password: 'admin',
-  port: 5433
+  password: 'apple123',
+  port: 5432
 });
 
 // Request flask api to access face recogniser 
@@ -53,7 +53,7 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
     //to add the emitted data from recogniser.py and adding to database
     pool.connect();
 
-    pool.query("INSERT INTO dristitb(names, lastentry, imagepath, nameId) VALUES($1, $2, $3, $4)", 
+    pool.query("INSERT INTO dristitb(name, lastentry, imagepath, nameid) VALUES($1, $2, $3, $4)", 
     [detectedUser,entryTime, imagePath, detectedId], (err, result) => {
       //res.send(result.rows)
       if(err){
@@ -62,18 +62,6 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
         console.log(result.rows);
       }
     });  
-
-
-
-    // Check if the detected person is in the database
-    Object.keys(usersInfo).map( (key) =>{
-      if(usersInfo[key]['name'] === detectedUser){
-        console.log('The person is: '+ detectedUser);
-        console.log('Last entry of the user is: ' + usersInfo[key]['lastentry']);
-        console.log('The image path is: ');
-      }
-
-    });
   });
     
 
@@ -99,7 +87,6 @@ app.post('/addNewPerson', (req, res, next) => {
                       if(error){
                         console.log(error);
                       }
-                      console.log(JSON.stringify(body, undefined, 2));
                     });  
 
                     res.send(`New user ${req.body.name} has been added  in the database`);
