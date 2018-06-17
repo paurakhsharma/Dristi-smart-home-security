@@ -10,7 +10,7 @@ def reconizer_func():
 
 
     try:
-        conn = psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5433)
+        conn = psycopg2.connect(database="dristidb", user="dristi", password="apple123", port=5432, host='localhost')
         print("connected")
     except:
         print("I am unable to connect to the database")
@@ -48,6 +48,8 @@ def reconizer_func():
     cam = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
 
+    # This is to wait for 10s before sending recognise response
+    currentTime = time.time()
     while(True): 
         Id = 0
         id=int(0)
@@ -71,17 +73,19 @@ def reconizer_func():
                 name = name_list[pointer]
                 print(name)
                 if(conf <= 55 ):
-                    path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
-                    cv2.imwrite(path,image) 
+                    if(time.time() > currentTime + 10):
 
-                    emit('recognise', {
-                        'detectedUser':name,
-                        'detectedId' : Id,
-                        'imagePath': path,
-                        'entryTime' : timeReq
-                    })
+                        path = "../facialRecognition/detectedUsersLog/"+str(uuid.uuid1())+".jpg"
+                        cv2.imwrite(path,image) 
 
-                      
+                        emit('recognise', {
+                            'detectedUser':name,
+                            'detectedId' : Id,
+                            'imagePath': path,
+                            'entryTime' : timeReq
+                        })
+                        currentTime = time.time()
+
                 cv2.putText(image,str(name),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
                 cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
 
