@@ -6,7 +6,7 @@ import psycopg2
 from flask import jsonify,make_response,render_template,session
 from flask_socketio import emit
 
-def reconizer_func():
+def reconizer_func(disconnect):
 
 
     try:
@@ -84,6 +84,7 @@ def reconizer_func():
                             'imagePath': path,
                             'entryTime' : timeReq
                         })
+                        print(name, Id, path, timeReq)
                         currentTime = time.time()
 
                 cv2.putText(image,str(name),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
@@ -92,9 +93,11 @@ def reconizer_func():
         cv2.imshow("Image", image)
         if(cv2.waitKey(1) == ord('q')):
             cam.release()
-            cv2.destroyAllWindows()      
+            cv2.destroyAllWindows()
+            disconnect('send_message')    
 
     cam.release()
     cv2.destroyAllWindows()
+    disconnect('send_message')
 
 # reconizer_func()

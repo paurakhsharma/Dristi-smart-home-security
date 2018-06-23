@@ -5,7 +5,7 @@ sys.path.append('../')
 
 from flask import Flask, jsonify, render_template, session, request
 from flask_httpauth import HTTPBasicAuth
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, disconnect
 
 
 from threading import Lock
@@ -43,7 +43,7 @@ def index():
 @socketio.on('send_message')
 def handle_source():
     print('handel source has been called')
-    recogniser.reconizer_func()
+    recogniser.reconizer_func(disconnect)
 
 if __name__== '__main__':
     socketio.run(app,debug=True)

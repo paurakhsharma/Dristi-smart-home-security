@@ -18,8 +18,10 @@ const pool = new Pool({
 });
 
 // Request flask api to access face recogniser 
-var usersInfo = null;
-var last = null;
+var detectedUser = null;
+var detectedId = null;
+var imagePath = null;
+var entryTime = null;
 // Assign dust engine to .dust Files
 // app.engine('dust', cons.dust);
 
@@ -61,7 +63,7 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
       }else{
         console.log(result.rows);
       }
-    });  
+    });
   });
     
 
@@ -76,23 +78,29 @@ app.post('/addNewPerson', (req, res, next) => {
   pool.query("INSERT INTO userlist(name) VALUES($1)", 
                 [req.body.name], (err, result) => {
                   //res.send(result.rows)
-                  if(err){
-                    return console.error("errror occured", err);
-                  }else{
-                    request({
-                      url: `http://localhost:5000/flask/api/v1.0/create/`,
-                      json: true,
-                      method: "POST"
-                    }, (error, response, body) => {
-                      if(error){
-                        console.log(error);
-                      }
-                    });  
+        if(err){
+          return console.error("errror occured", err);
+        }else{
+          request({
+            url: `http://localhost:5000/flask/api/v1.0/create/`,
+            json: true,
+            method: "POST"
+          }, (error, response, body) => {
+            if(error){
+              console.log(error);
+            }
+          });  
 
-                    res.send(`New user ${req.body.name} has been added  in the database`);
-                  
-                  }
-                });  
+          res.send(`New user ${req.body.name} has been added  in the database`);
+        
+        }
+      }); 
+      next();           
+  });
+
+  app.get('/stream', (req, res, next) => {
+    res.status(200).json({detectedUser,imagePath});
+    next();
   });
 
 
@@ -117,7 +125,7 @@ app.listen(4000, () => {
   });
     
   app.get('/', (req,res) => {
-    res.sendFile(path.join(__dirname+'/templates/index.html'), usersInfo);
+    res.sendFile(path.join(__dirname+'/templates/index.html'));
   })
 
 });
