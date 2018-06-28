@@ -3,6 +3,7 @@ import os
 import sys
 from facialRecognition import trainer
 import psycopg2
+import webbrowser
 
 
 from flask import jsonify
@@ -52,4 +53,5 @@ def dataSetCreator_func(noOfSamples):
             break    
     cam.release()
     cv2.destroyAllWindows()
-    trainer.trainer_func()       
+    trainer.trainer_func() 
+    webbrowser.open('http://localhost:4000/',new=0)      

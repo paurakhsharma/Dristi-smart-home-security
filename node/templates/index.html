@@ -48,6 +48,8 @@ input[type=button], input[type=submit], input[type=reset] {
 <!-- navigation bar ko lagi -->
 <style>
 ul {
+    font-family:Times New Roman;
+    font-size:14pt;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -57,10 +59,11 @@ ul {
 
 li {
     float: left;
+    width:25%;
 }
 
 li a {
-    width:480px;
+    
     display: block;
     color: white;
     text-align: center;
@@ -69,13 +72,14 @@ li a {
 
 }
 
-li a:hover {
-    background-color: #111;
-}
+li a:hover:not(.active) {background-color: #111;}
+
+.active {background-color: #2d5699;}
 
 div.last{
     position: fixed;
     bottom:0;
+    left:0;
     width:100%;
 }
 
@@ -94,16 +98,29 @@ div.last{
 		<div class="center">
     <form action="/addNewPerson" method="POST">
         
-        <input type="text"  name="name" placeholder="Enter your name">
+        <input type="text"  name="name" placeholder="Enter your name" minlength="7" maxlength="25" required 
+        pattern="^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)">
         <br>
         <input type="submit" value="Register">
-      
+
+  <!-- learn about regular expressions    
+     ^ (start of line)
+[a-zA-Z]{2,} (will except a name with at least two characters)
+\s (will look for white space between name and surname)
+[a-zA-Z]{1,} (needs at least 1 Character)
+'?-? (possibility of ' or - for double barreled and hyphenated surnames)
+[a-zA-Z]{2,} (will except a name with at least two characters)
+\s? (possibility of another whitespace)
+([a-zA-Z]{1,})? *(possibility of a second surname)<*br/>
+       -->
     </form>
 </div>
     </center>
 
 <div class="last">
 <ul>
+
+  <li><a href="http://localhost:4000/" class="active">Dristi</a></li>
   <li><a href="http://localhost:4000/userdata">Userdata</a></li>
   <li><a href="http://127.0.0.1:4000/node/api/v1/recognise">Recognize</a></li>
   <li><a href="http://localhost:4000/record">Records</a></li>
