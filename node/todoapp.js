@@ -10,10 +10,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const pool = new Pool({
-  user: 'dristi',
+  user: 'postgres',
   host: 'localhost',
   database: 'dristidb',
-  password: 'apple123',
+  password: 'admin',
   port: 5432
 });
 
@@ -55,8 +55,8 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
     //to add the emitted data from recogniser.py and adding to database
     pool.connect();
 
-    pool.query("INSERT INTO dristitb(name, lastentry, imagepath, nameid) VALUES($1, $2, $3, $4)", 
-    [detectedUser,entryTime, imagePath, detectedId], (err, result) => {
+    pool.query("INSERT INTO dristitb(name, lastentry, imagepath) VALUES($1, $2, $3)", 
+    [detectedUser,entryTime, imagePath], (err, result) => {
       //res.send(result.rows)
       if(err){
         return console.error("errror occured", err);
@@ -95,35 +95,124 @@ app.post('/addNewPerson', (req, res, next) => {
         
         }
       }); 
-      next();           
+      // next();           
   });
 
-  app.get('/stream', (req, res, next) => {
-    res.status(200).json({detectedUser,imagePath});
-    next();
-  });
+  // app.get('/stream', (req, res, next) => {
+  //   res.status(200).json({detectedUser,imagePath});
+  //   next();
+  // });
+
+
+
+
+//data tanne kaam yeha bata hunxa ani page ma dekhaune
+
+
+app.get('/userdata', (req, res) => {
+  console.log('displaying userdata');
+
+  pool.connect();
+  pool.query("SELECT name FROM userlist", (err, result) => {
+                  // res.send(result.rows)
+        if(err){
+          return console.error("errror occured while displaying userdata", err);
+        }else{
+          
+          // res.send(JSON.stringify(result.rows));
+           console.log(typeof((result.rows)))
+
+           // res.write("<table><tr><td>123</td></tr><tr><td>456</td></tr><tr><td>789</td></tr><tr><td>012</td></tr></table>");
+            
+
+            res.write("<style>body{background: #43cea2; background: -webkit-linear-gradient(to right, #185a9d, #43cea2);background: linear-gradient(to right, #185a9d, #43cea2); }  </style>")
+            res.write("<style> table {font-family: arial, sans-serif;border-collapse: collapse;width: 80%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style>")
+            res.write("<table align=center>")
+
+            //  for(i=0;i<result.columns.length;i++){
+            //   res.write(`<tr><td> ${result.[i].name} </tr></td>`)
+
+            // }
+            res.write(`<tr><th>Name</th><th>Description</th><th>Privileges</th></td>`)
+            for(i=0;i<result.rows.length;i++){
+              res.write(`<tr><td> ${result.rows[i].name} </td> <td>${result.rows[i].name} </td><td> ${result.rows[i].name} </td> </tr>`)
+
+            }
+            res.write("</table>")
+
+            // console.log(result.rows.length)
+          
+        }
+      }); 
+
+});
+  // record of users tarined time from recogniser
+
+  app.get('/record', (req, res) => {
+  console.log('displaying userdata');
+
+  pool.connect();
+  pool.query("SELECT name,lastentry,imagepath FROM dristitb", (err, result) => {
+                  // res.send(result.rows)
+        if(err){
+          return console.error("errror occured while displaying userdata", err);
+        }else{
+          
+          // res.send(JSON.stringify(result.rows));
+           console.log(typeof((result.rows)))
+
+           // res.write("<table><tr><td>123</td></tr><tr><td>456</td></tr><tr><td>789</td></tr><tr><td>012</td></tr></table>");
+            
+
+            res.write("<style>body{background: #43cea2; background: -webkit-linear-gradient(to right, #185a9d, #43cea2);background: linear-gradient(to right, #185a9d, #43cea2); }  </style>")
+            res.write("<style> table {font-family: arial, sans-serif;border-collapse: collapse;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;}tr:nth-child(even) {background-color: #dddddd;}</style>")
+            res.write("<table align=center>")
+
+            //  for(i=0;i<result.columns.length;i++){
+            //   res.write(`<tr><td> ${result.[i].name} </tr></td>`)
+
+            // }
+            res.write(`<tr><th>Name</th><th>LastEntry</th><th>Imagepath</th></td>`)
+            for(i=0;i<result.rows.length;i++){
+              res.write(`<tr><td> ${result.rows[i].name} </td> <td>${result.rows[i].lastentry} </td><td> ${result.rows[i].imagepath} </td> </tr>`)
+
+            }
+            res.write("</table>")
+
+            // console.log(result.rows.length)
+          
+        }
+}); 
+
+
+});
+
+
+
 
 
 // start local host server  
 app.listen(4000, () => {
   console.log("eth is working")
 
-  pool.connect((err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-    }
-  
-    pool.query('SELECT * FROM userlist', (err, result) => {
-      if(err){
-          return console.error('error running query', err);
-      }
-      
+      pool.connect((err, client, done) => {
+        // Handle connection errors
+        if(err) {
+          done();
+          console.log(err);
+        }
 
-    }); 
-  });
-    
+        pool.query('SELECT * FROM userlist', (err, result) => {
+          if(err){
+              return console.error('error running query', err);
+          }
+          
+        console.log(result.rows)
+
+
+       }); 
+    });
+        
   app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname+'/templates/index.html'));
   })

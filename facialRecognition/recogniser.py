@@ -2,15 +2,17 @@ import cv2
 import uuid
 import time
 import psycopg2
+import os
 
 from flask import jsonify,make_response,render_template,session
 from flask_socketio import emit
 
 def reconizer_func(disconnect):
-
+    if not os.path.exists('../facialRecognition/detectedUsersLog'):
+        os.makedirs('../facialRecognition/detectedUsersLog')
 
     try:
-        conn = psycopg2.connect(database="dristidb", user="dristi", password="apple123", port=5432, host='localhost')
+        conn = psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5432, host='localhost')
         print("connected")
     except:
         print("I am unable to connect to the database")
@@ -80,7 +82,6 @@ def reconizer_func(disconnect):
 
                         emit('recognise', {
                             'detectedUser':name,
-                            'detectedId' : Id,
                             'imagePath': path,
                             'entryTime' : timeReq
                         })
