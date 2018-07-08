@@ -3,6 +3,7 @@ import os
 import sys
 from facialRecognition import trainer
 import psycopg2
+import webbrowser
 
 
 from flask import jsonify
@@ -20,7 +21,7 @@ def dataSetCreator_func(noOfSamples):
         os.makedirs('../facialRecognition/dataSet')    
 
     try:
-        conn=psycopg2.connect(database="dristidb", user="dristi", password="apple123", port=5432, host='localhost')
+        conn=psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5432, host='localhost')
         print("connected")
     except:
         print("unable to connect")   
@@ -52,4 +53,5 @@ def dataSetCreator_func(noOfSamples):
             break    
     cam.release()
     cv2.destroyAllWindows()
-    trainer.trainer_func()       
+    trainer.trainer_func() 
+    webbrowser.open('http://localhost:4000/',new=0)      

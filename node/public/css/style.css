@@ -1,0 +1,110 @@
+body {
+    margin-top:10px;
+    background:#f9f9f9;
+    background: #43cea2; 
+    background: -webkit-linear-gradient(to right, #185a9d, #43cea2);
+    background: linear-gradient(to right, #185a9d, #43cea2); 
+}
+
+ul {font-family:Times New Roman;font-size:14pt;
+    list-style-type: none;margin: 0;
+    padding: 0;overflow: hidden
+    ;background-color: #333;
+} 
+li {float: left;width:25%;}
+
+li a {display: block;
+      color: white;text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;}
+li a:hover:not(.active) {background-color: #111;}
+   .active {background-color: #2d5699;}
+
+div.last{position: fixed;  bottom:0;left:0;width:100%;}
+
+table {font-family: times new roman, sans-serif;
+    border-collapse: collapse
+    ;width: 80%;}
+td, th {border: 1px solid #dddddd;
+    text-align: left;padding: 8px;}
+tr:nth-child(even) {background-color: #dddddd;}
+
+
+input[type=text] {
+    width: 400px;
+    padding: 10px 16px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    font-family: Times New Roman;
+    font-size:14pt;
+}
+option,select{
+    width: 400px;
+    padding: 10px 16px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    font-family: Times New Roman;
+    font-size:14pt;
+    text-indent: 120px;
+}
+
+div.center{
+	 margin-top:50px;
+	}
+
+
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+
+
+
+input[type=button], input[type=submit], input[type=reset] {
+	width:400px;
+    background-color: #2d5699;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+     font-family: Times New Roman;
+    font-size:14pt;
+}
+
+
+span.delete{
+    padding: 3px;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+	
+	
+}
+
+span.delete:hover{
+    background-color: #ccc;
+}
+
+span.update{
+    padding: 3px;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+	
+	
+}
+
+span.update:hover{
+    background-color: #ccc;
+}
+
+
