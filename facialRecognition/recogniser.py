@@ -70,7 +70,8 @@ def reconizer_func(disconnect):
                 
 
                 print(Id)
-                pointer=id_list.index(Id)
+               
+                pointer=id_list.index(Id) if Id in id_list else 0
 
                 name = name_list[pointer]
                 print(name)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dristi</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+
+	 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+    
+	
+	
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<div class="container">
+		
+			
+		{+body /}
+			
+		
+	</div>
+	<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+	
+	
+</body>
+</html>
