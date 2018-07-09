@@ -115,29 +115,30 @@ app.post('/addNewPerson', (req, res, next) => {
 app.post('/edit', function(req, res){
 	// PG Connect
 		pool.connect()
-	  pool.query("UPDATE userlist SET name=$1, description=$2, privileges=$3 WHERE name = $1",
-	  	[req.body.name,req.body.description,req.body.privileges]);
-	
+	  // pool.query("UPDATE userlist SET name=$1, description=$2, privileges=$3 WHERE name = $1",
+	  // 	[req.body.name,req.body.description,req.body.privileges]);
+	console.log(req.body.name)
+  console.log(req.body.description)
+  console.log(req.body.privileges)	
 		
-		res.redirect('/');
 	
 });
 
 //deleting user records
 
-app.get('/delete/:name', function(req, res){
+app.get('/delete/:id', function(req, res){
 	// PG Connect
 		pool.connect()
 	
 	
-	
+    id=req.params.id
     name=req.params.name
-    console.log(name)
-    pool.query('SELECT id FROM userlist WHERE name=$1',[name],function(err, result) {
-	    if(err) {
-	      return console.error('error running query', err);
-      }
-      ID=(result.rows[0]).id
+    // console.log(name)
+    // pool.query('SELECT id FROM userlist WHERE name=$1',[name],function(err, result) {
+	  //   if(err) {
+	  //     return console.error('error running query', err);
+    //   }
+      ID=id
       // console.log(ID)
 
       //delete data from node directory which was printed as avatar in userdata template
@@ -160,7 +161,7 @@ app.get('/delete/:name', function(req, res){
       }
 
       //after deleting files lets delete the data from database
-      pool.query('DELETE FROM userlist WHERE name = $1',[req.params.name], (err, result) => {
+      pool.query('DELETE FROM userlist WHERE id = $1',[req.params.id], (err, result) => {
         if(err){
             return console.error('error running query', err);
         }
@@ -171,7 +172,7 @@ app.get('/delete/:name', function(req, res){
 	
 		// console.log(ID)
 		// res.send(200);
-	}); 
+	//}); 
 });
 
 

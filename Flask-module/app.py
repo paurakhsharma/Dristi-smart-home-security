@@ -3,7 +3,7 @@
 import sys
 sys.path.append('../')
 
-from flask import Flask, jsonify, render_template, session, request
+from flask import Flask, jsonify, render_template, session, request, redirect
 from flask_httpauth import HTTPBasicAuth
 from flask_socketio import SocketIO, emit, disconnect
 
@@ -23,7 +23,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 @app.route('/flask/api/v1.0/create/', methods=['POST'])
 def run_fecogniser():
     dataSetCreator.dataSetCreator_func(50)
-    return jsonify({'created': "Data set has been created"})
+    return redirect('https://localhost:4000/')
 
 #Train the imageDataSet
 @app.route('/flask/api/v1.0/train', methods=['GET'])

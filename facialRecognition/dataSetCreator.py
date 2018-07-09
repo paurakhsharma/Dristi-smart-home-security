@@ -70,4 +70,4 @@ def dataSetCreator_func(noOfSamples):
     cam.release()
     cv2.destroyAllWindows()
     trainer.trainer_func() 
-    webbrowser.open('http://localhost:4000/',new=0)      
+     

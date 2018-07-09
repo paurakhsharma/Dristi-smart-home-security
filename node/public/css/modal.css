@@ -51,7 +51,7 @@
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #ff0000;
     text-decoration: none;
     cursor: pointer;
 }
