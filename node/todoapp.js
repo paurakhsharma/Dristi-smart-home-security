@@ -112,15 +112,21 @@ app.post('/addNewPerson', (req, res, next) => {
 //editing data
 
 
-app.post('/edit', function(req, res){
+app.post('/edit/:id', function(req, res){
+  const data = {name: req.body.name, description: req.body.description, privileges:req.body.privileges};
 	// PG Connect
-		pool.connect()
-	  // pool.query("UPDATE userlist SET name=$1, description=$2, privileges=$3 WHERE name = $1",
-	  // 	[req.body.name,req.body.description,req.body.privileges]);
+	
+  id=req.params.id
+  console.log(id);  
 	console.log(req.body.name)
   console.log(req.body.description)
   console.log(req.body.privileges)	
-		
+  console.log(data);
+  pool.connect()
+  pool.query("UPDATE userlist SET name=$1, description=$2, privileges=$3 WHERE id = $4",
+    [req.body.name,req.body.description,req.body.privileges,id]);
+
+  res.send(200);  
 	
 });
 
