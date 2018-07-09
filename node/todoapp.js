@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 cons = require('consolidate');
 const request = require('request');
 var path    = require("path");
+var fs = require('fs');
 
 // DB Connect String
 
@@ -81,7 +82,7 @@ app.post('/addNewPerson', (req, res, next) => {
   console.log('new person api is called');
 
 	pool.connect();
-	//avatarimg="/img/boy.jpg"
+	
   pool.query("INSERT INTO userlist(name,description,privileges) VALUES($1,$2,$3)", 
                 [req.body.name,req.body.description,req.body.privileges], (err, result) => {
                   //res.send(result.rows)
@@ -127,19 +128,49 @@ app.post('/edit', function(req, res){
 app.get('/delete/:name', function(req, res){
 	// PG Connect
 		pool.connect()
-		// var ID = parseInt(req.params.id);
-		// console.log(ID)
-	  // pool.query("SELECT * FROM userlist WHERE id = $1",
-	  // 	[ID]);
-		// console.log(res.rows.item(0))
-		console.log(req.params.name)
-		pool.query('DELETE FROM userlist WHERE name = $1',[req.params.name], (err, result) => {
-			if(err){
-					return console.error('error running query', err);
-			}
 	
-		console.log(result.rows)
-		res.send(200);
+	
+	
+    name=req.params.name
+    console.log(name)
+    pool.query('SELECT id FROM userlist WHERE name=$1',[name],function(err, result) {
+	    if(err) {
+	      return console.error('error running query', err);
+      }
+      ID=(result.rows[0]).id
+      // console.log(ID)
+
+      //delete data from node directory which was printed as avatar in userdata template
+      avatarfile="./public/img/avatar."+ID+".jpg"
+      //console.log(avatarfile)
+      if (fs.existsSync(avatarfile)) {
+        // Do something
+        //console.log("file exits")
+        fs.unlinkSync(avatarfile);
+      }
+      
+      // delete images from dataset
+      for(i=1;i<=50;i++){
+        dataset="../facialRecognition/dataSet/user."+ID+"."+i+".jpg"
+        if (fs.existsSync(dataset)) {
+          // Do something
+         // console.log("file exits")
+          fs.unlinkSync(dataset);
+        }
+      }
+
+      //after deleting files lets delete the data from database
+      pool.query('DELETE FROM userlist WHERE name = $1',[req.params.name], (err, result) => {
+        if(err){
+            return console.error('error running query', err);
+        }
+    });
+   
+    
+      
+	
+		// console.log(ID)
+		// res.send(200);
 	}); 
 });
 
@@ -189,21 +220,21 @@ app.get('/userdata', function(req, res){
 app.listen(4000, () => {
   console.log("eth is working")
 
-      pool.connect((err, client, done) => {
-        // Handle connection errors
-        if(err) {
-          done();
-          console.log(err);
-        }
+      // pool.connect((err, client, done) => {
+      //   // Handle connection errors
+      //   if(err) {
+      //     done();
+      //     console.log(err);
+      //   }
 
-        pool.query('SELECT * FROM userlist', (err, result) => {
-          if(err){
-              return console.error('error running query', err);
-          }
+      //   pool.query('SELECT * FROM userlist', (err, result) => {
+      //     if(err){
+      //         return console.error('error running query', err);
+      //     }
           
-          console.log(result.rows)
-        }); 
-      });
+      //     console.log(result.rows)
+      //   }); 
+      // });
         
 
 });
