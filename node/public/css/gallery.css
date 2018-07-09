@@ -1,6 +1,11 @@
 body{
     margin:0px 100px;
 }
+
+/* img{
+    width:300px;
+    height: 200px;
+} */
 div.gallery {
     margin: 5px;
     border: 1px solid #ccc;
@@ -9,12 +14,13 @@ div.gallery {
 }
 
 div.gallery:hover {
-    border: 1px solid #777;
+    border: 1px solid #43cea2;
 }
 
 div.gallery img {
     width: 100%;
     height: auto;
+
 }
 
 div.desc {

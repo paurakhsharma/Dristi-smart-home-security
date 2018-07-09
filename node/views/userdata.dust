@@ -60,7 +60,7 @@ var modal = document.getElementById('myModal');
 
   <div class="gallery">
   			
-    			<img src="{avatarimg}" width="300" height="200">
+    			<img src="{avatarimg}" >
   			     
   			    <div class="desc">
 			    

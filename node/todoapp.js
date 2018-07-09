@@ -81,9 +81,9 @@ app.post('/addNewPerson', (req, res, next) => {
   console.log('new person api is called');
 
 	pool.connect();
-	avatarimg="/img/boy.jpg"
-  pool.query("INSERT INTO userlist(name,description,privileges,avatarimg) VALUES($1,$2,$3,$4)", 
-                [req.body.name,req.body.description,req.body.privileges,avatarimg], (err, result) => {
+	//avatarimg="/img/boy.jpg"
+  pool.query("INSERT INTO userlist(name,description,privileges) VALUES($1,$2,$3)", 
+                [req.body.name,req.body.description,req.body.privileges], (err, result) => {
                   //res.send(result.rows)
         if(err){
           return console.error("errror occured", err);
