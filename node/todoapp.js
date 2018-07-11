@@ -105,7 +105,8 @@ app.post('/addNewPerson', (req, res, next) => {
         }
       }); 
       // res.redirect('/')
-      // next();           
+      // next();    
+        
   });
 
 
