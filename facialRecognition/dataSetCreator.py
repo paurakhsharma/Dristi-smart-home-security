@@ -4,6 +4,7 @@ import sys
 from facialRecognition import trainer
 import psycopg2
 import webbrowser
+import shutil
 
 
 from flask import jsonify
@@ -29,7 +30,17 @@ def dataSetCreator_func(noOfSamples):
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM userlist")
     last=cursor.fetchall()
+    last.sort()
     Id=last.pop()[0]
+
+    avatarcopied=False
+    source="../facialRecognition/dataSet/user."+str(Id)+".1.jpg"
+    destination="../node/public/img/avatar."+str(Id)+".jpg"
+    avatarindb="/img/avatar."+str(Id)+".jpg"
+    cursor.execute("UPDATE userlist SET avatarimg=(%s) WHERE id = (%s)", [avatarindb,Id]);
+    conn.commit()
+    cursor.close()
+    conn.close()
         
     cam = cv2.VideoCapture(0)
     faceDetector = cv2.CascadeClassifier("../facialRecognition/haarcascade_frontalface_default.xml")
@@ -44,9 +55,14 @@ def dataSetCreator_func(noOfSamples):
         for(x,y,w,h) in face:
             sampleNum += 1
             cv2.imwrite("../facialRecognition/dataSet/user."+str(Id)+"."+str(sampleNum)+".jpg",gray[y:y+h,x:x+w])
+            if(avatarcopied==False):
+                #shutil.copy(source,destination)
+                cv2.imwrite(destination,image)
+                avatarcopied==True
             cv2.rectangle(image,(x,y),(x+w,y+h),(0,0,255),2)
             cv2.waitKey(200)
 
+      
         cv2.imshow("show", image)
         cv2.waitKey(1)  
         if(sampleNum >= noOfSamples):
@@ -54,4 +70,4 @@ def dataSetCreator_func(noOfSamples):
     cam.release()
     cv2.destroyAllWindows()
     trainer.trainer_func() 
-    webbrowser.open('http://localhost:4000/',new=0)      
+     

@@ -10,4 +10,5 @@ facialRecognition/__pycache__
 *.pyc
 node/node_modules/
 node/package-lock.json
+node/public/img
 

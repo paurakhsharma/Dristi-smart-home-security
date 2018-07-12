@@ -14,8 +14,9 @@
 console.log("hello");
 var modal = document.getElementById('myModal');
 
- $('span.delete').on("click",function(){
-				
+$('span.delete').on("click",function(){
+	var id = $(this).parent().find('div.idhidden').text();
+			
 	$(this).parent().parent().fadeOut(500,function(){});	
 				
 	$(this).fadeOut(500,function(){
@@ -25,28 +26,67 @@ var modal = document.getElementById('myModal');
 		var $tds = $(this).parent().find('div.name');
 		$name=$tds.text();
 		console.log($name);
-
-						
+		console.log(id);
+		var gohere="http://localhost:4000/delete/"+id;
+		console.log(gohere);				
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', "http://localhost:4000/delete/"+$name, true);
+		xhr.open('GET', gohere, true);
 		xhr.send();
 	});  
- });
+});
  
- $('span.update').on("click",function(){
-	 console.log("modal opened by niranjan");
-	 modal.style.display = "block";
-	  
-	  $('span.close').on("click",function(){
-		  console.log("modal closed by niranjan");
-		  modal.style.display = "none";
-	  });
+$('span.update').on("click",function(){
+	console.log("modal opened by niranjan");
+	modal.style.display = "block";
+	 
+	var id = $(this).parent().find('div.idhidden').text();
 
-	  $('input.submittedtoupdate').on("click",function(){
-		  console.log("submitted");
-		  var name=document.getElementById('#upname').value;
-		  console.log(name);
-	  });
+	console.log(id);
+	  
+	$('span.close').off('click').on("click",function(event){
+		console.log("modal closed by niranjan");
+		modal.style.display = "none";
+		console.log(id);
+	});
+
+	$('input.submittedtoupdate').off('click').on("click",function(){
+			console.log("submitted");
+			var datatoupdate=$('form').serialize().split('&');
+			console.log(datatoupdate);
+			var nametoupdate=(datatoupdate[0].split('+').join(' ')).substring(5);
+			var desctoupdate=(datatoupdate[1].split('+').join(' ')).substring(12);
+			var privtoupdate=(datatoupdate[2].split('+').join(' ')).substring(11);
+			console.log(nametoupdate);
+			console.log(desctoupdate);
+			console.log(privtoupdate);
+			console.log(id);
+			var updatingurl="http://localhost:4000/edit/"+id;
+
+			var model = {
+				name: nametoupdate,
+				description: desctoupdate,
+				privileges: privtoupdate,
+		  	};
+
+			console.log(model);  
+
+			$.ajax({
+            	type: "POST",
+            	url: updatingurl,
+            	data: JSON.stringify(model),
+            	contentType: "application/json; charset = utf-8",
+            	datatype: "json",
+            	async: true,
+            	cache: false,
+            	success: function (response) {
+                	console.log(response);
+            	},
+            	error: function (x, e) {
+                	console.log('err');
+            	}
+			});
+			modal.style.display = "none";
+		});
 
 
  });
@@ -60,7 +100,7 @@ var modal = document.getElementById('myModal');
 
   <div class="gallery">
   			
-    			<img src="{avatarimg}" width="300" height="200">
+    			<img src="{avatarimg}" >
   			     
   			    <div class="desc">
 			    
@@ -68,8 +108,11 @@ var modal = document.getElementById('myModal');
 			  	<div class="name">
 				  {name}
 				</div>
+				<!--  -->
+				<div class="idhidden" name="idhidden"  style="display:none;" >{id}</div>
 				{description}<br>
 				{privileges}<br>
+				<br>
 				<span class="delete"><i class="fa fa-trash-o fa-lg"></i></span>
 					  &nbsp;&nbsp;&nbsp;&nbsp;
 					<span class="update"><i class="fa fa-refresh" aria-hidden="true"></i></span>  
@@ -91,15 +134,15 @@ var modal = document.getElementById('myModal');
       <h2>Update Your Userlist</h2>
     </div>
     <div class="modal-body">
-      <form id="myForm">
-	  
-	  <input type="text" name="description" placeholder="description" id="updesc"><br>
+      <form id="myForm" autocomplete="off">
+	  <input type="text" name="name" placeholder="Update name" id="upname"><br>
+	  <input type="text" name="description" placeholder="Description" id="updesc"><br>
 	  <select class="privileges" name="privileges" required>
 		<option name="privileges" value="granted">Entry Granted</option>
 		<option name="privileges" value="permission required">permission required</option>
 		<option name="privileges" value"not yet decided">TBD</option>
 		</select><br>
-		<input type="text" name="name" placeholder="update name" id="upname">
+		
        <input type="button" value="Register" class="submittedtoupdate">
 	   </form>
 	  
