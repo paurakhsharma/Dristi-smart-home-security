@@ -13,7 +13,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'dristidb',
-  password: 'admin',
+  password: 'apple123',
   port: 5432
 });
 
@@ -211,7 +211,7 @@ app.get('/userdata', function(req, res){
   app.get('/records', function(req, res){
     // PG Connect
       pool.connect()
-      pool.query('SELECT * FROM dristitb', function(err, result) {
+      pool.query('SELECT * FROM dristitb order by id desc', function(err, result) {
         if(err) {
           return console.error('error running query', err);
         }
