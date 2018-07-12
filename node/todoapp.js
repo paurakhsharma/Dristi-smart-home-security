@@ -26,6 +26,7 @@ app.set('views', __dirname + '/views');
 
 // Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('/home/paurakh/Projects/Dristi-smart-home-security/facialRecognition/detectedUsersLog'));
 
 // Body Parser Middleware
 app.use(bodyParser.json());

@@ -6,7 +6,6 @@
 
 					<center>
 							<img src="/img/logo.png">
-							
 						<div class="center">
 						
 								<form action="/addNewPerson" method="POST">

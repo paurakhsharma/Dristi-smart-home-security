@@ -11,7 +11,7 @@
 		<tr>
 		<td> {name} </td> 
 		<td>{lastentry} </td>
-		<td> {imagepath} </td> 
+		<td> <img src="/{imagepath}" alt="Unable to load image"></td> 
 		</tr>
 	
 	{/usertable}
