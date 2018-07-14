@@ -6,15 +6,16 @@
 
   <table align=center>
 		<tr><th>Name</th><th>Last Entry</th><th>ImagePath</th></td>
-	{#usertable}
+	{#records}
 		
 		<tr>
 		<td> {name} </td> 
 		<td>{lastentry} </td>
-		<td> <img src="/{imagepath}" alt="Unable to load image"></td> 
+	
+		<td> <img src="/{imagepath}" alt="Unable to load image" style="width:150px;height:150px;"></td> 
 		</tr>
 	
-	{/usertable}
+	{/records}
 	</table>
 
 

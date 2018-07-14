@@ -3,17 +3,19 @@ import uuid
 import time
 import psycopg2
 import os
+import sys
 
 
 from flask import jsonify,make_response,render_template,session
 from flask_socketio import emit
 
 def reconizer_func(disconnect):
+    
     if not os.path.exists('../facialRecognition/detectedUsersLog'):
         os.makedirs('../facialRecognition/detectedUsersLog')
 
     try:
-        conn = psycopg2.connect(database="dristidb", user="postgres", password="apple123", port=5432, host='localhost')
+        conn = psycopg2.connect(database="dristidb", user="postgres", password="admin", port=5432, host='localhost')
         print("connected")
     except:
         print("I am unable to connect to the database")
@@ -76,7 +78,7 @@ def reconizer_func(disconnect):
 
                 name = name_list[pointer]
                 print(name)
-                if(conf <= 55 ):
+                if(conf <= 60 ):
                     if(time.time() > currentTime + 10):
                         imageName = str(uuid.uuid1())+".jpg"
                         path = "../facialRecognition/detectedUsersLog/"+imageName
@@ -88,11 +90,10 @@ def reconizer_func(disconnect):
                             'entryTime' : timeReq
                         })
                         print(name, Id, path, timeReq)
-                        currentTime = time.time()
-
+                        
+                        currentTime = time.time()                        
                 cv2.putText(image,str(name),(x,y+h),font,1,(0,255,0),2,cv2.LINE_AA)
                 cv2.putText(image,str(int(conf)),(x,y),font,1,(0,0,255),2,cv2.LINE_AA)
-
         cv2.imshow("Image", image)
         if(cv2.waitKey(1) == ord('q')):
             cam.release()

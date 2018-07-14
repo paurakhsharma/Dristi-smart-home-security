@@ -23,9 +23,7 @@ $('span.delete').on("click",function(){
 
 		console.log("i am here");
 		$(this).parent().parent().remove();
-		var $tds = $(this).parent().find('div.name');
-		$name=$tds.text();
-		console.log($name);
+		
 		console.log(id);
 		var gohere="http://localhost:4000/delete/"+id;
 		console.log(gohere);				
@@ -100,9 +98,9 @@ $('span.update').on("click",function(){
 
   <div class="gallery">
   			
-    			<img src="{avatarimg}" >
+    		<img src="{avatarimg}" >
   			     
-  			    <div class="desc">
+  			<div class="desc">
 			    
   					
 			  	<div class="name">
@@ -143,7 +141,7 @@ $('span.update').on("click",function(){
 		<option name="privileges" value"not yet decided">TBD</option>
 		</select><br>
 		
-       <input type="button" value="Register" class="submittedtoupdate">
+       <input type="button" value="Update" class="submittedtoupdate">
 	   </form>
 	  
     </div>

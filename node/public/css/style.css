@@ -42,6 +42,18 @@ input[type=text] {
     font-family: Times New Roman;
     font-size:14pt;
 }
+input[type=email] {
+    width: 400px;
+    padding: 10px 16px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    font-family: Times New Roman;
+    font-size:14pt;
+}
 option,select{
     width: 400px;
     padding: 10px 16px;
