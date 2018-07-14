@@ -31,3 +31,5 @@ def trainer_func():
     recogniser.train(faces, np.array(Ids))
     recogniser.save('../facialRecognition/trainer/trainer.yml')
     print('Tranning complete')
+
+#trainer_func()    

@@ -1,0 +1,31 @@
+{>"layout" /}
+
+{<body}
+
+
+
+  <table align=center>
+		<tr><th>Name</th><th>Last Entry</th><th>ImagePath</th></td>
+	{#usertable}
+		
+		<tr>
+		<td> {name} </td> 
+		<td>{lastentry} </td>
+		<td> <img src="/{imagepath}" alt="Unable to load image"></td> 
+		</tr>
+	
+	{/usertable}
+	</table>
+
+
+
+<div class='last'>
+<ul>
+<li><a href='http://localhost:4000/' >Dristi</a></li>
+<li><a href='http://localhost:4000/userdata' >Userdata</a></li>
+<li><a href='http://127.0.0.1:4000/node/api/v1/recognise'>Recognize</a></li>
+<li><a href='http://localhost:4000/records' class='active'>Records</a></li>
+<ul>
+</div>
+
+{/body}

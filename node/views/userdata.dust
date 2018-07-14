@@ -1,0 +1,166 @@
+{>"layout" /}
+
+
+<link rel="stylesheet" href="/css/gallery.css">
+<link rel="stylesheet" href="/css/modal.css">
+
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+
+
+
+<script>
+console.log("hello");
+var modal = document.getElementById('myModal');
+
+$('span.delete').on("click",function(){
+	var id = $(this).parent().find('div.idhidden').text();
+			
+	$(this).parent().parent().fadeOut(500,function(){});	
+				
+	$(this).fadeOut(500,function(){
+
+		console.log("i am here");
+		$(this).parent().parent().remove();
+		var $tds = $(this).parent().find('div.name');
+		$name=$tds.text();
+		console.log($name);
+		console.log(id);
+		var gohere="http://localhost:4000/delete/"+id;
+		console.log(gohere);				
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', gohere, true);
+		xhr.send();
+	});  
+});
+ 
+$('span.update').on("click",function(){
+	console.log("modal opened by niranjan");
+	modal.style.display = "block";
+	 
+	var id = $(this).parent().find('div.idhidden').text();
+
+	console.log(id);
+	  
+	$('span.close').off('click').on("click",function(event){
+		console.log("modal closed by niranjan");
+		modal.style.display = "none";
+		console.log(id);
+	});
+
+	$('input.submittedtoupdate').off('click').on("click",function(){
+			console.log("submitted");
+			var datatoupdate=$('form').serialize().split('&');
+			console.log(datatoupdate);
+			var nametoupdate=(datatoupdate[0].split('+').join(' ')).substring(5);
+			var desctoupdate=(datatoupdate[1].split('+').join(' ')).substring(12);
+			var privtoupdate=(datatoupdate[2].split('+').join(' ')).substring(11);
+			console.log(nametoupdate);
+			console.log(desctoupdate);
+			console.log(privtoupdate);
+			console.log(id);
+			var updatingurl="http://localhost:4000/edit/"+id;
+
+			var model = {
+				name: nametoupdate,
+				description: desctoupdate,
+				privileges: privtoupdate,
+		  	};
+
+			console.log(model);  
+
+			$.ajax({
+            	type: "POST",
+            	url: updatingurl,
+            	data: JSON.stringify(model),
+            	contentType: "application/json; charset = utf-8",
+            	datatype: "json",
+            	async: true,
+            	cache: false,
+            	success: function (response) {
+                	console.log(response);
+            	},
+            	error: function (x, e) {
+                	console.log('err');
+            	}
+			});
+			modal.style.display = "none";
+		});
+
+
+ });
+
+
+
+</script>
+
+{<body}
+{#usertable}
+
+  <div class="gallery">
+  			
+    			<img src="{avatarimg}" >
+  			     
+  			    <div class="desc">
+			    
+  					
+			  	<div class="name">
+				  {name}
+				</div>
+				<!--  -->
+				<div class="idhidden" name="idhidden"  style="display:none;" >{id}</div>
+				{description}<br>
+				{privileges}<br>
+				<br>
+				<span class="delete"><i class="fa fa-trash-o fa-lg"></i></span>
+					  &nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="update"><i class="fa fa-refresh" aria-hidden="true"></i></span>  
+			</div>
+        </div>       
+
+{/usertable}
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Update Your Userlist</h2>
+    </div>
+    <div class="modal-body">
+      <form id="myForm" autocomplete="off">
+	  <input type="text" name="name" placeholder="Update name" id="upname"><br>
+	  <input type="text" name="description" placeholder="Description" id="updesc"><br>
+	  <select class="privileges" name="privileges" required>
+		<option name="privileges" value="granted">Entry Granted</option>
+		<option name="privileges" value="permission required">permission required</option>
+		<option name="privileges" value"not yet decided">TBD</option>
+		</select><br>
+		
+       <input type="button" value="Register" class="submittedtoupdate">
+	   </form>
+	  
+    </div>
+  
+  </div>
+
+</div>
+
+
+
+<div class='last'>
+<ul>
+<li><a href='http://localhost:4000/' >Dristi</a></li>
+<li><a href='http://localhost:4000/userdata' class='active'>Userdata</a></li>
+<li><a href='http://127.0.0.1:4000/node/api/v1/recognise'>Recognize</a></li>
+<li><a href='http://localhost:4000/records'>Records</a></li>
+<ul>
+</div>
+
+{/body}

@@ -1,0 +1,64 @@
+{>"layout" /}
+
+{<body}
+
+
+
+					<center>
+							<img src="/img/logo.png">
+						<div class="center">
+						
+								<form action="/addNewPerson" method="POST">
+								
+
+								
+								<input type="text"  name="name" placeholder="Enter your name" minlength="7" maxlength="25" required 
+								pattern="^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)">
+								<br>
+								<br>
+								<input type="text" name="description" placeholder="Description" required>
+								<br>
+								<br>
+								
+								<select class="privileges" name="privileges" required>
+								<option name="privileges" value="granted">Entry Granted</option>
+								<option name="privileges" value="permission required">permission required</option>
+								<option name="privileges" value"not yet decided">TBD</option>
+								</select>
+								<br>
+								<input type="submit" value="Register">
+								
+					<!-- learn about regular expressions    
+							^ (start of line)
+					[a-zA-Z]{2,} (will except a name with at least two characters)
+					\s (will look for white space between name and surname)
+					[a-zA-Z]{1,} (needs at least 1 Character)
+					'?-? (possibility of ' or - for double barreled and hyphenated surnames)
+					[a-zA-Z]{2,} (will except a name with at least two characters)
+					\s? (possibility of another whitespace)
+					([a-zA-Z]{1,})? *(possibility of a second surname)<*br/>
+								-->
+						</form>
+					</div>
+						</center>
+
+
+
+
+
+
+
+
+
+
+
+<div class='last'>
+<ul>
+<li><a href='http://localhost:4000/' class='active'>Dristi</a></li>
+<li><a href='http://localhost:4000/userdata' >Userdata</a></li>
+<li><a href='http://127.0.0.1:4000/node/api/v1/recognise'>Recognize</a></li>
+<li><a href='http://localhost:4000/records'>Records</a></li>
+</ul>
+</div>
+
+{/body}
