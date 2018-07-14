@@ -31,11 +31,6 @@ def train_dataSet():
     trainer.trainer_func()
     return jsonify({'trained': "Data set has been trained"})  
 
-# Run the recogniser
-# @app.route('/flask/api/v1.0/recognise', methods=['GET'])
-# def recognise_faces():
-#     return(recogniser.reconizer_func())
-
 @app.route("/")
 def index():
     return render_template('index.html',)

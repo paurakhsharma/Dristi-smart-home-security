@@ -1,7 +1,49 @@
 {>"layout" /}
 
+<link rel="stylesheet" href="/css/modal.css">
+
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+
+<script>
+	let modal = document.getElementById('myModal');
+
+	$('span.email').on("click",function(){
+		console.log("hi");
+		
+		modal.style.display = "block";
+	});
+
+	$('span.close').on("click",function(event){
+		console.log("modal closed by niranjan");
+		modal.style.display = "none";
+	});
+
+	$('input.Add').on("click",function(){
+		console.log("submitted");
+		var email=$('#email').val();
+		console.log(email);
+		
+		var addthis="http://localhost:4000/email/"+email;
+ 
+		console.log(addthis);
+						
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', addthis, true);
+		xhr.send();
+		modal.style.display = "none";
+		$('#email').val('');
+	});
+
+
+</script>
+
 {<body}
 
+<span class="email">
+	<i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+</span>
 
 
 					<center>
@@ -60,5 +102,33 @@
 <li><a href='http://localhost:4000/records'>Records</a></li>
 </ul>
 </div>
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+		  <div class="modal-header">
+			<span class="close">&times;</span>
+			<h2>Add Your Emails</h2>
+		  </div>
+		  <div class="modal-body">
+			<form id="myForm" autocomplete="off">
+			<input type="email" name="email" placeholder="Enter a valid email here" id="email" required>
+			<br>
+
+			
+			  
+			 <input type="button" value="Add" class="Add">
+			 </form>
+			
+		  </div>
+		
+		</div>
+	  
+	  </div>
 
 {/body}

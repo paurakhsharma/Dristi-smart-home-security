@@ -6,6 +6,7 @@ cons = require('consolidate');
 const request = require('request');
 var path    = require("path");
 var fs = require('fs');
+var mail=require('./mail.js')
 
 // DB Connect String
 
@@ -13,7 +14,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'dristidb',
-  password: 'apple123',
+  password: 'admin',
   port: 5432
 });
 
@@ -26,7 +27,8 @@ app.set('views', __dirname + '/views');
 
 // Set Public Folder
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static('/home/paurakh/Projects/Dristi-smart-home-security/facialRecognition/detectedUsersLog'));
+app.use(express.static('C:/Users/Niranjan/Desktop/Dristi-smart-home-security/facialRecognition/detectedUsersLog'));
+
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -39,8 +41,6 @@ var detectedUser = null;
 var detectedId = null;
 var imagePath = null;
 var entryTime = null;
-
-
 
 
 app.get('/node/api/v1/recognise', (req, res, next) => {
@@ -58,7 +58,15 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
     
     //to add the emitted data from recogniser.py and adding to database
     pool.connect();
+    var recipeints=[];
+    pool.query("SELECT email from email_list",function(er, result){
+      for(var i in result.rows){
+        recipeints.push(result.rows [i].email);
+      }
+      console.log(recipeints)
 
+    })
+    mail.notify_Users(detectedUser,imagePath,recipeints);
     pool.query("INSERT INTO dristitb(name, lastentry, imagepath) VALUES($1, $2, $3)", 
     [detectedUser,entryTime, imagePath], (err, result) => {
       //res.send(result.rows)
@@ -68,15 +76,13 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
         console.log(result.rows);
       }
     });
+    res.end()
   });
     
 
   // Establish socket connection
   socket.emit('send_message');
 });
-
-
-
 
 //adding new person
 app.post('/addNewPerson', (req, res, next) => {
@@ -111,8 +117,6 @@ app.post('/addNewPerson', (req, res, next) => {
   });
 
 
-//editing data
-
 
 app.post('/edit/:id', function(req, res){
   const data = {name: req.body.name, description: req.body.description, privileges:req.body.privileges};
@@ -133,14 +137,13 @@ app.post('/edit/:id', function(req, res){
 });
 
 //deleting user records
-
 app.get('/delete/:id', function(req, res){
 	// PG Connect
 		pool.connect()
 	
 	
     id=req.params.id
-    name=req.params.name
+    //name=req.params.name
     // console.log(name)
     // pool.query('SELECT id FROM userlist WHERE name=$1',[name],function(err, result) {
 	  //   if(err) {
@@ -173,6 +176,8 @@ app.get('/delete/:id', function(req, res){
         if(err){
             return console.error('error running query', err);
         }
+        // result.end()
+       
     });
    
     
@@ -183,11 +188,7 @@ app.get('/delete/:id', function(req, res){
 	//}); 
 });
 
-
-
-
-
-//data tanne kaam yeha bata hunxa ani page ma dekhaune
+//displaying data
 app.get('/userdata', function(req, res){
 	// PG Connect
 		pool.connect()
@@ -196,36 +197,49 @@ app.get('/userdata', function(req, res){
 	      return console.error('error running query', err);
 	    }
 	    res.render('userdata', {usertable: result.rows});
-	    res.end
+	  
 	  });
 	
 });
 
+// record of users tarined time from recogniser
 
-
-
-
-
-
-  // record of users tarined time from recogniser
-
-  app.get('/records', function(req, res){
+app.get('/records', function(req, res){
     // PG Connect
       pool.connect()
       pool.query('SELECT * FROM dristitb order by id desc', function(err, result) {
         if(err) {
           return console.error('error running query', err);
         }
-        res.render('records', {usertable: result.rows});
-        
+        res.render('records', {records: result.rows});
+
       });
     
   });
 
-  
 
 
-// start local host server  
+  //adding emails
+app.post('/email/:email', (req, res, next) => {
+  console.log('email added');
+
+  pool.connect();
+  console.log(req.params.email)
+	
+  pool.query("INSERT INTO email_list(email) VALUES($1)", [req.params.email], (err, result) => {
+        if(err){
+          return console.error("errror occured", err);
+        }else{
+          return console.log("email added successfully");
+        } 
+        });  
+          res.end()
+        
+        
+      }); 
+   
+
+  // start local host server  
 app.listen(4000, () => {
   console.log("eth is working")
 
