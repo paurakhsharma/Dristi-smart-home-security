@@ -21,7 +21,7 @@ module.exports={
             from: 'Dristi Smart Home Security <dristi.nepal2018@gmail.com>',
             //from: 'Dristi Smart-Home-Security <dristi.nepal2018@gmail.com>',
             to: recipients,
-            subject: 'Sending Email using Node.js',
+            subject: 'Dristi Notification',
             text: detected + ' is at your door',
             attachments: [{   // stream as an attachment
                 filename: imagePath,

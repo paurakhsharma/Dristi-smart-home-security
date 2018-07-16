@@ -41,7 +41,7 @@ def reconizer_func(disconnect):
         name_list.append(ai)
 
     id_list.insert(0,0)
-    name_list.insert(0,'low confidence')    
+    name_list.insert(0,'Unknown person')    
     print(name_list)
     print(id_list)
 
@@ -66,7 +66,7 @@ def reconizer_func(disconnect):
             Id, conf = reconizer.predict(gray[y:y+h,x:x+w])
             if(conf <= 90):
                 cv2.rectangle(image, (x-50,y-50),(x+w+50,y+h+50),(225,0,0),2)
-                if(conf >= 67):
+                if(conf >= 60):
                     Id = 0
                 else:
                     Id = Id    
@@ -78,7 +78,7 @@ def reconizer_func(disconnect):
 
                 name = name_list[pointer]
                 print(name)
-                if(conf <= 60 ):
+                if(conf <= 65 ):
                     if(time.time() > currentTime + 10):
                         imageName = str(uuid.uuid1())+".jpg"
                         path = "../facialRecognition/detectedUsersLog/"+imageName
