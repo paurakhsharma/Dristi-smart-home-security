@@ -1,5 +1,5 @@
 body {
-    margin:3px 90px;
+    margin:3px 150px;
     background:#f9f9f9;
     background: #43cea2; 
     background: -webkit-linear-gradient(to right, #185a9d, #43cea2);
@@ -20,7 +20,8 @@ li a {display: block;
 li a:hover:not(.active) {background-color: #111;}
    .active {background-color: #2d5699;}
 
-div.last{position: fixed;  bottom:0;left:0;width:100%;}
+div.last{position:fixed;bottom:0px;left:0;width:100%;}
+
 
 table {font-family: times new roman, sans-serif;
     border-collapse: collapse
@@ -39,8 +40,10 @@ input[type=text] {
     -webkit-transition: 0.5s;
     transition: 0.5s;
     outline: none;
-    font-family: Times New Roman;
+    font-family: 'Times New Roman';
     font-size:14pt;
+
+   
 }
 input[type=email] {
     width: 400px;
@@ -66,6 +69,7 @@ option,select{
     font-family: Times New Roman;
     font-size:14pt;
     text-indent: 120px;
+  
 }
 
 div.center{
@@ -102,6 +106,38 @@ span.delete{
 	
 }
 
+span.deleteall{
+    align:center;
+    width: 80px;
+    height: 80px;
+    border-radius:50%; 
+    position:fixed;
+    font-size:32px;
+    top:350px;
+    
+	
+	
+}
+
+span.chart{
+    align:center;
+    width: 80px;
+    height: 80px;
+    border-radius:50%; 
+    position:fixed;
+    font-size:32px;
+    top:350px;
+    left:80px;
+    text-decoration: none;
+}
+span.chart:hover{
+    font-size:60px;
+}
+span.deleteall:hover{
+    font-size:60px;
+    
+}
+
 span.delete:hover{
     background-color: #ccc;
 }
@@ -120,3 +156,9 @@ span.update:hover{
 }
 
 
+a.chart {
+    text-decoration: none;
+}
+a.chart:link, a.chart:visited {
+    color:#111;
+}

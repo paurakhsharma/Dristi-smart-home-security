@@ -50,7 +50,7 @@
 							<img src="/img/logo.png">
 						<div class="center">
 						
-								<form action="/addNewPerson" method="POST">
+								<form action="/addNewPerson" method="POST" autocomplete="off">
 								
 
 								

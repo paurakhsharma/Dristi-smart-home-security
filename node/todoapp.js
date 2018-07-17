@@ -63,7 +63,7 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
       for(var i in result.rows){
         recipeints.push(result.rows [i].email);
       }
-      console.log(recipeints)
+      console.log(recipeints);
 
     })
     mail.notify_Users(detectedUser,imagePath,recipeints);
@@ -87,10 +87,23 @@ app.get('/node/api/v1/recognise', (req, res, next) => {
 //adding new person
 app.post('/addNewPerson', (req, res, next) => {
   console.log('new person api is called');
+  new_name=req.body.name
+  var users=[]
 
 	pool.connect();
-	
-  pool.query("INSERT INTO userlist(name,description,privileges) VALUES($1,$2,$3)", 
+  
+  pool.query("SELECT name FROM userlist",function(err,result){
+    for(var i in result.rows){
+      users.push((result.rows [i].name));
+    }
+    console.log(users)
+
+    if (users.indexOf(new_name) > -1) {
+      //In the array!
+      console.log("dont fool me with old data");
+  } else {
+      //Not in the array
+      pool.query("INSERT INTO userlist(name,description,privileges) VALUES($1,$2,$3)", 
                 [req.body.name,req.body.description,req.body.privileges], (err, result) => {
                   //res.send(result.rows)
         if(err){
@@ -111,10 +124,11 @@ app.post('/addNewPerson', (req, res, next) => {
         
         }
       }); 
-      // res.redirect('/')
-      // next();    
-        
+    }
+
   });
+ 
+});
 
 
 
@@ -136,19 +150,13 @@ app.post('/edit/:id', function(req, res){
 	
 });
 
-//deleting user records
+//deleting user userdata
 app.get('/delete/:id', function(req, res){
 	// PG Connect
 		pool.connect()
 	
 	
     id=req.params.id
-    //name=req.params.name
-    // console.log(name)
-    // pool.query('SELECT id FROM userlist WHERE name=$1',[name],function(err, result) {
-	  //   if(err) {
-	  //     return console.error('error running query', err);
-    //   }
       ID=id
       // console.log(ID)
 
@@ -188,6 +196,63 @@ app.get('/delete/:id', function(req, res){
 	//}); 
 });
 
+//deleting user records
+app.get('/recdelete/:id', function(req, res){
+	// PG Connect
+		pool.connect()
+	
+	
+    id=req.params.id
+
+    // // delete images from dataset
+    // for(i=1;i<=50;i++){
+    //   dataset="../facialRecognition/dataSet/user."+ID+"."+i+".jpg"
+    //   if (fs.existsSync(dataset)) {
+    //     // Do something
+    //    // console.log("file exits")
+    //     fs.unlinkSync(dataset);
+    //   }
+    // }
+
+    //after deleting files lets delete the data from database
+    pool.query('DELETE FROM dristitb WHERE id = $1',[req.params.id], (err, result) => {
+      if(err){
+            return console.error('error running query', err);
+        }
+    
+       
+    });	
+
+});
+
+//truncating table-- all user records
+app.get('/truncaterecords', function(req, res){
+  // PG Connect
+  directory=__dirname+'/../facialRecognition/detectedUsersLog'
+    pool.connect()
+    
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+    
+      for (const file of files) {
+        fs.unlink(path.join(directory, file), err => {
+          if (err) throw err;
+        });
+      }
+    });
+	
+    //after deleting files lets delete the data from database
+    pool.query('TRUNCATE ONLY dristitb', (err, result) => {
+      if(err){
+            return console.error('error running query', err);
+        }
+    
+       
+    });	
+
+});
+
+
 //displaying data
 app.get('/userdata', function(req, res){
 	// PG Connect
@@ -215,6 +280,18 @@ app.get('/records', function(req, res){
 
       });
     
+  });
+
+//chart
+  app.get('/chart', function(req, res){
+
+
+  pool.query('SELECT name FROM dristitb',function(err,result){
+         
+  
+  res.render('chart',{entries: result.rows});
+  });
+
   });
 
 

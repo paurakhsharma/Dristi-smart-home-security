@@ -1,18 +1,71 @@
 {>"layout" /}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+<script>
+	$('span.delete').on('click',function(){
+		console.log("hello");
+		var id=$(this).find('span.idhidden').text();
+		console.log(id);
+		$(this).parent().parent().fadeOut(500,function(){});
+		$(this).parent().parent().remove();
+		var gohere="http://localhost:4000/recdelete/"+id;
+		console.log(gohere);				
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', gohere, true);
+		xhr.send();
+
+	});
+
+	$('span.deleteall').on('click',function(){
+		console.log("deleteall");
+		var id=$(this).find('span.idhidden').text();
+		console.log(id);
+		if (confirm('Are you sure you want to Clear all the logs')) {
+			$('table').remove();
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', "http://localhost:4000/truncaterecords/", true);
+			xhr.send();
+		} else {
+			
+		}
+		
+		
+		
+	
+
+	});
+
+	
+
+</script>
+
+
 
 {<body}
+
+<span class="deleteall"><i class="fas fa-trash"></i></span>
+<span class="chart"><a class="chart" href='http://localhost:4000/chart'><i class="fas fa-chart-bar"></i></a></span>
+
 
 
 
   <table align=center>
-		<tr><th>Name</th><th>Last Entry</th><th>ImagePath</th></td>
+		<tr><th></th></th><th>Name</th><th>Last Entry</th><th>ImagePath</th></td>
 	{#records}
-		
+	
 		<tr>
+		<td>
+				<span class="delete">
+						<span class="idhidden" name="idhidden" >{id}</span>
+						<i class="fas fa-trash-alt"></i>
+					
+				</span>
+		</td>
 		<td> {name} </td> 
 		<td>{lastentry} </td>
-	
-		<td> <img src="/{imagepath}" alt="Unable to load image" style="width:150px;height:150px;"></td> 
+		
+		<td> <img src="/{imagepath}" alt="Unable to load image" style="width:150px;height:150px;">
+		</td> 
 		</tr>
 	
 	{/records}

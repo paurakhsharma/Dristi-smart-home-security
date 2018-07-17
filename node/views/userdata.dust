@@ -9,6 +9,8 @@
 
 
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <script>
 console.log("hello");
@@ -96,6 +98,7 @@ $('span.update').on("click",function(){
 {<body}
 {#usertable}
 
+
   <div class="gallery">
   			
     		<img src="{avatarimg}" >
@@ -149,6 +152,8 @@ $('span.update').on("click",function(){
   </div>
 
 </div>
+
+
 
 
 

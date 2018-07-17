@@ -7,11 +7,13 @@
     height: 200px;
 } */
 div.gallery {
-    margin: 10px 10px;
+    margin:8px 20px;
+    padding-bottom: 30px;
     border: 1px solid #ccc;
     float: left;
     width: 200px;
-    padding:2px;
+    
+    background: #fff;
 }
 
 div.gallery:hover {

@@ -11,10 +11,6 @@ from flask import jsonify
 
 def dataSetCreator_func(noOfSamples):
     
-    
-
-
-
     if not os.path.exists('../facialRecognition/trainer'):
         os.makedirs('../facialRecognition/trainer')
 

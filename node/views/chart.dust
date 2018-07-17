@@ -1,0 +1,119 @@
+{>"layout" /}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js" integrity="sha256-JG6hsuMjFnQ2spWq0UiaDRJBaarzhFbUxiUTxQDA9Lk=" crossorigin="anonymous"></script>
+	
+
+<script>
+
+var entries=$('ol').text().split(',');
+console.log(entries);
+entries.pop();
+const counts = Object.create(null);
+entries.forEach(btn => {
+    counts[btn] = counts[btn] ? counts[btn] + 1 : 1;
+    });
+console.log(counts); 
+var person=[];
+var numofentry=[];
+   
+for(i in counts){
+    
+    person.push(i);
+    numofentry.push(counts[i]);
+  
+}
+console.log(person);
+console.log(numofentry);
+
+    
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: person,
+        datasets: [{
+            label: '# of Votes',
+            data: numofentry,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+                'rgba(255, 159, 64, 0.8)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        legend: {
+            labels: {
+                fontColor: "white",
+                fontSize: 18
+            }
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor: "white",
+                    fontSize: 14,
+                    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+
+
+
+
+</script>
+
+
+
+
+{<body}
+
+<div style="display:none;">
+
+{#entries}
+<ol><li>{name},</li></ol>
+
+{/entries}
+</div>
+
+
+
+
+<div class="chart-container" style="position: relative; height:40vh; width:80vw">
+    <canvas id="myChart" width="400" height="220"></canvas>
+</div>
+
+
+
+
+<div class='last'>
+<ul>
+<li><a href='http://localhost:4000/' >Dristi</a></li>
+<li><a href='http://localhost:4000/userdata' >Userdata</a></li>
+<li><a href='http://127.0.0.1:4000/node/api/v1/recognise'>Recognize</a></li>
+<li><a href='http://localhost:4000/records' class='active'>Records</a></li>
+<ul>
+</div>
+
+{/body}
